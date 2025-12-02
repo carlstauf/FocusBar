@@ -8,6 +8,7 @@
 import Foundation
 import UserNotifications
 import AppKit
+import Combine
 
 class NotificationService: ObservableObject {
     private var settings: SettingsModel?

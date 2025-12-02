@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 class SettingsModel: ObservableObject {
     // Timer Settings
@@ -22,9 +23,13 @@ class SettingsModel: ObservableObject {
     @AppStorage("showTimerInMenuBar") var showTimerInMenuBar: Bool = true
     
     // Sound Settings
-    @AppStorage("soundEnabled") var soundEnabled: Bool = true
-    @AppStorage("soundType") var soundType: String = "ding"
+    @AppStorage("enableSounds") var enableSounds: Bool = true
+    @AppStorage("soundType") var soundType: String = "Ping"
     @AppStorage("soundVolume") var soundVolume: Double = 0.5
+    @AppStorage("playSoundOnFocusStart") var playSoundOnFocusStart: Bool = true
+    @AppStorage("playSoundOnFocusEnd") var playSoundOnFocusEnd: Bool = true
+    @AppStorage("playSoundOnBreakStart") var playSoundOnBreakStart: Bool = true
+    @AppStorage("playSoundOnBreakEnd") var playSoundOnBreakEnd: Bool = true
     
     // Notification Settings
     @AppStorage("notificationsEnabled") var notificationsEnabled: Bool = true

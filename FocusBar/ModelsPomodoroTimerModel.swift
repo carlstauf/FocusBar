@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import AppKit
 
 enum TimerState {
     case idle
