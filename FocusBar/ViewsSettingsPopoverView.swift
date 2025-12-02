@@ -13,78 +13,94 @@ struct SettingsPopoverView: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 14) {
                 // Header
-                HStack {
-                    Text("Settings")
-                        .font(.system(.title2, design: .rounded, weight: .semibold))
-                    Spacer()
-                }
-                .padding(.bottom, 4)
+                Text("Settings")
+                    .font(.headline)
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+                
+                Divider()
                 
                 // Timer Settings
-                GroupBox(label: Label("Timer", systemImage: "timer")) {
-                    VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Label("Timer", systemImage: "timer")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                    
+                    VStack(alignment: .leading, spacing: 10) {
                         HStack {
-                            Text("Focus Duration")
+                            Text("Focus")
+                                .font(.caption)
                             Spacer()
                             Text("\(settings.focusLength) min")
+                                .font(.caption)
                                 .foregroundColor(.secondary)
                                 .monospacedDigit()
                         }
                         Slider(value: Binding(
                             get: { Double(settings.focusLength) },
-                            set: { newValue in
-                                settings.focusLength = Int(newValue)
-                            }
+                            set: { settings.focusLength = Int($0) }
                         ), in: 1...90, step: 1)
                         
                         HStack {
-                            Text("Break Duration")
+                            Text("Break")
+                                .font(.caption)
                             Spacer()
                             Text("\(settings.breakLength) min")
+                                .font(.caption)
                                 .foregroundColor(.secondary)
                                 .monospacedDigit()
                         }
                         Slider(value: Binding(
                             get: { Double(settings.breakLength) },
-                            set: { newValue in
-                                settings.breakLength = Int(newValue)
-                            }
+                            set: { settings.breakLength = Int($0) }
                         ), in: 1...30, step: 1)
                         
-                        Toggle("Long Break (every 4 cycles)", isOn: $settings.longBreakEnabled)
+                        Toggle("Long Break (every 4)", isOn: $settings.longBreakEnabled)
+                            .font(.caption)
                         
                         if settings.longBreakEnabled {
                             HStack {
-                                Text("Long Break Duration")
+                                Text("Long Break")
+                                    .font(.caption)
                                 Spacer()
                                 Text("\(settings.longBreakLength) min")
+                                    .font(.caption)
                                     .foregroundColor(.secondary)
                                     .monospacedDigit()
                             }
-                            .padding(.leading)
+                            .padding(.leading, 12)
                             Slider(value: Binding(
                                 get: { Double(settings.longBreakLength) },
-                                set: { newValue in
-                                    settings.longBreakLength = Int(newValue)
-                                }
+                                set: { settings.longBreakLength = Int($0) }
                             ), in: 5...60, step: 5)
-                            .padding(.leading)
+                            .padding(.leading, 12)
                         }
                         
-                        Toggle("Auto-start next session", isOn: $settings.autoStart)
+                        Toggle("Auto-start next", isOn: $settings.autoStart)
+                            .font(.caption)
                     }
-                    .padding(.vertical, 4)
+                    .padding(.horizontal)
                 }
                 
+                Divider()
+                
                 // Appearance Settings
-                GroupBox(label: Label("Appearance", systemImage: "paintbrush")) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Toggle("Compact Mode (icon only)", isOn: $settings.compactMode)
+                VStack(alignment: .leading, spacing: 8) {
+                    Label("Appearance", systemImage: "paintbrush")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Compact Mode", isOn: $settings.compactMode)
+                            .font(.caption)
                         
                         HStack {
                             Text("Menu Bar Color")
+                                .font(.caption)
                             Spacer()
                             Picker("", selection: $settings.menuBarColor) {
                                 Text("Auto").tag("auto")
@@ -93,92 +109,131 @@ struct SettingsPopoverView: View {
                                 Text("Green").tag("green")
                             }
                             .labelsHidden()
-                            .frame(width: 100)
+                            .frame(width: 90)
                         }
-                        
-                        Toggle("Show Timer in Menu Bar", isOn: $settings.showTimerInMenuBar)
                     }
-                    .padding(.vertical, 4)
+                    .padding(.horizontal)
                 }
                 
+                Divider()
+                
                 // Sound Settings
-                GroupBox(label: Label("Sound", systemImage: "speaker.wave.2")) {
-                    VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Label("Sound", systemImage: "speaker.wave.2")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                    
+                    VStack(alignment: .leading, spacing: 10) {
                         Toggle("Enable Sounds", isOn: $settings.enableSounds)
+                            .font(.caption)
                         
                         if settings.enableSounds {
                             HStack {
                                 Text("Volume")
+                                    .font(.caption)
                                 Spacer()
                                 Text("\(Int(settings.soundVolume * 100))%")
+                                    .font(.caption)
                                     .foregroundColor(.secondary)
                                     .monospacedDigit()
-                                    .frame(width: 40, alignment: .trailing)
+                                    .frame(width: 35)
                             }
-                            .padding(.leading)
+                            .padding(.leading, 12)
                             
-                            HStack {
+                            HStack(spacing: 6) {
                                 Image(systemName: "speaker.fill")
+                                    .font(.caption2)
                                     .foregroundColor(.secondary)
                                 Slider(value: $settings.soundVolume, in: 0...1)
                                 Image(systemName: "speaker.wave.3.fill")
+                                    .font(.caption2)
                                     .foregroundColor(.secondary)
                             }
-                            .padding(.leading)
+                            .padding(.leading, 12)
                             
                             Button("Test Sound") {
                                 let sound = NSSound(named: "Glass")
                                 sound?.volume = Float(settings.soundVolume)
                                 sound?.play()
                             }
+                            .controlSize(.small)
                             .buttonStyle(.bordered)
-                            .padding(.leading)
+                            .padding(.leading, 12)
                         }
                     }
-                    .padding(.vertical, 4)
+                    .padding(.horizontal)
                 }
+                
+                Divider()
                 
                 // Notifications
-                GroupBox(label: Label("Notifications", systemImage: "bell")) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Label("Notifications", systemImage: "bell")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                    
                     Toggle("Enable Notifications", isOn: $settings.notificationsEnabled)
-                        .padding(.vertical, 4)
+                        .font(.caption)
+                        .padding(.horizontal)
                 }
                 
+                Divider()
+                
                 // Behavior Settings
-                GroupBox(label: Label("Behavior", systemImage: "slider.horizontal.3")) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Toggle("Strict Mode (no pause)", isOn: $settings.strictMode)
-                            .help("When enabled, the timer cannot be paused")
-                        Toggle("End of Session Reminder", isOn: $settings.endOfSessionReminder)
-                            .help("Shows a reminder when the session is about to end")
+                VStack(alignment: .leading, spacing: 8) {
+                    Label("Behavior", systemImage: "slider.horizontal.3")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Strict Mode", isOn: $settings.strictMode)
+                            .font(.caption)
+                            .help("Timer cannot be paused")
+                        
+                        Toggle("End Reminder", isOn: $settings.endOfSessionReminder)
+                            .font(.caption)
+                            .help("Shows reminder near end of session")
                     }
-                    .padding(.vertical, 4)
+                    .padding(.horizontal)
                 }
                 
                 // Stats
                 if timerModel.completedCycles > 0 {
-                    GroupBox(label: Label("Today", systemImage: "chart.bar")) {
+                    Divider()
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label("Today", systemImage: "chart.bar")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal)
+                        
                         HStack {
-                            Text("Completed Cycles")
+                            Text("Completed")
+                                .font(.caption)
                             Spacer()
                             Text("\(timerModel.completedCycles)")
-                                .font(.system(.title3, design: .rounded, weight: .semibold))
+                                .font(.title3)
+                                .fontWeight(.semibold)
                                 .foregroundColor(.red)
+                                .monospacedDigit()
                         }
-                        .padding(.vertical, 4)
+                        .padding(.horizontal)
                     }
                 }
                 
-                // Footer info
-                Text("Changes are saved automatically")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                // Footer
+                Text("Changes save automatically")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, 8)
+                    .padding(.top, 4)
+                    .padding(.bottom, 8)
             }
-            .padding()
         }
-        .frame(width: 400, height: 600)
+        .frame(width: 340, height: 480)
     }
 }
 
