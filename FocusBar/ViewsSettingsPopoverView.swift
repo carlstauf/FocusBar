@@ -30,10 +30,13 @@ struct SettingsPopoverView: View {
                             Spacer()
                             Text("\(settings.focusLength) min")
                                 .foregroundColor(.secondary)
+                                .monospacedDigit()
                         }
                         Slider(value: Binding(
                             get: { Double(settings.focusLength) },
-                            set: { settings.focusLength = Int($0) }
+                            set: { newValue in
+                                settings.focusLength = Int(newValue)
+                            }
                         ), in: 1...90, step: 1)
                         
                         HStack {
@@ -41,10 +44,13 @@ struct SettingsPopoverView: View {
                             Spacer()
                             Text("\(settings.breakLength) min")
                                 .foregroundColor(.secondary)
+                                .monospacedDigit()
                         }
                         Slider(value: Binding(
                             get: { Double(settings.breakLength) },
-                            set: { settings.breakLength = Int($0) }
+                            set: { newValue in
+                                settings.breakLength = Int(newValue)
+                            }
                         ), in: 1...30, step: 1)
                         
                         Toggle("Long Break (every 4 cycles)", isOn: $settings.longBreakEnabled)
@@ -55,11 +61,14 @@ struct SettingsPopoverView: View {
                                 Spacer()
                                 Text("\(settings.longBreakLength) min")
                                     .foregroundColor(.secondary)
+                                    .monospacedDigit()
                             }
                             .padding(.leading)
                             Slider(value: Binding(
                                 get: { Double(settings.longBreakLength) },
-                                set: { settings.longBreakLength = Int($0) }
+                                set: { newValue in
+                                    settings.longBreakLength = Int(newValue)
+                                }
                             ), in: 5...60, step: 5)
                             .padding(.leading)
                         }
@@ -86,6 +95,8 @@ struct SettingsPopoverView: View {
                             .labelsHidden()
                             .frame(width: 100)
                         }
+                        
+                        Toggle("Show Timer in Menu Bar", isOn: $settings.showTimerInMenuBar)
                     }
                     .padding(.vertical, 4)
                 }
@@ -99,8 +110,19 @@ struct SettingsPopoverView: View {
                             HStack {
                                 Text("Volume")
                                 Spacer()
+                                Text("\(Int(settings.soundVolume * 100))%")
+                                    .foregroundColor(.secondary)
+                                    .monospacedDigit()
+                                    .frame(width: 40, alignment: .trailing)
+                            }
+                            .padding(.leading)
+                            
+                            HStack {
+                                Image(systemName: "speaker.fill")
+                                    .foregroundColor(.secondary)
                                 Slider(value: $settings.soundVolume, in: 0...1)
-                                    .frame(width: 120)
+                                Image(systemName: "speaker.wave.3.fill")
+                                    .foregroundColor(.secondary)
                             }
                             .padding(.leading)
                             
@@ -109,6 +131,7 @@ struct SettingsPopoverView: View {
                                 sound?.volume = Float(settings.soundVolume)
                                 sound?.play()
                             }
+                            .buttonStyle(.bordered)
                             .padding(.leading)
                         }
                     }
@@ -125,7 +148,9 @@ struct SettingsPopoverView: View {
                 GroupBox(label: Label("Behavior", systemImage: "slider.horizontal.3")) {
                     VStack(alignment: .leading, spacing: 12) {
                         Toggle("Strict Mode (no pause)", isOn: $settings.strictMode)
+                            .help("When enabled, the timer cannot be paused")
                         Toggle("End of Session Reminder", isOn: $settings.endOfSessionReminder)
+                            .help("Shows a reminder when the session is about to end")
                     }
                     .padding(.vertical, 4)
                 }
@@ -143,8 +168,26 @@ struct SettingsPopoverView: View {
                         .padding(.vertical, 4)
                     }
                 }
+                
+                // Footer info
+                Text("Changes are saved automatically")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 8)
             }
             .padding()
         }
+        .frame(width: 400, height: 600)
     }
+}
+
+#Preview {
+    SettingsPopoverView()
+        .environmentObject(SettingsModel())
+        .environmentObject(PomodoroTimerModel(
+            settings: SettingsModel(),
+            notificationService: NotificationService(),
+            soundService: SoundService(settings: SettingsModel())
+        ))
 }

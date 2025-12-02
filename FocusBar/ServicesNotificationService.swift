@@ -36,6 +36,7 @@ class NotificationService: ObservableObject {
         content.title = title
         content.body = body
         
+        // Use notification sound (not the timer sounds from SoundService)
         if settings?.enableSounds ?? true {
             content.sound = .default
         }
@@ -50,11 +51,6 @@ class NotificationService: ObservableObject {
             if let error = error {
                 print("Notification error: \(error)")
             }
-        }
-        
-        // Optional: Play system sound
-        if settings?.enableSounds ?? true {
-            NSSound.beep()
         }
     }
 }
