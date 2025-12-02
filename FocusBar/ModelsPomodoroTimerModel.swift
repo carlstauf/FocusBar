@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import Combine
 import AppKit
 
@@ -131,15 +132,34 @@ class PomodoroTimerModel: ObservableObject {
     }
     
     var menuBarLabel: String {
-        if state == .idle {
-            return settings.compactMode ? "⏱" : "00:00"
-        }
-        
         if settings.compactMode {
-            return state == .focus ? "🔴" : "🟢"
+            // Compact mode: show only icon
+            switch state {
+            case .idle:
+                return "⏱"
+            case .focus:
+                return "🟢"  // Green for focus
+            case .shortBreak, .longBreak:
+                return "🔵"  // Blue for break
+            }
+        } else {
+            // Normal mode: show timer text
+            if state == .idle {
+                return "00:00"
+            }
+            return timeString
         }
-        
-        return timeString
+    }
+    
+    var menuBarColor: Color {
+        switch state {
+        case .idle:
+            return .primary  // Auto/default
+        case .focus:
+            return .green
+        case .shortBreak, .longBreak:
+            return .blue
+        }
     }
     
     // MARK: - Private Methods
@@ -185,9 +205,14 @@ class PomodoroTimerModel: ObservableObject {
         let body = state == .focus ? "Time for a break." : "Ready to focus again?"
         notificationService.sendNotification(title: title, body: body)
         
-        // Track completed cycles
+        // Track completed cycles (only count focus sessions)
         if state == .focus {
             completedCycles += 1
+        }
+        
+        // Reset cycle counter after long break
+        if state == .longBreak {
+            completedCycles = 0
         }
         
         // Advance state
@@ -207,7 +232,8 @@ class PomodoroTimerModel: ObservableObject {
             state = .focus
             timeRemaining = settings.focusLength * 60
         case .focus:
-            if settings.longBreakEnabled && completedCycles % 4 == 0 {
+            // Long break happens after every 4th completed focus session
+            if settings.longBreakEnabled && completedCycles > 0 && completedCycles % 4 == 0 {
                 state = .longBreak
                 timeRemaining = settings.longBreakLength * 60
             } else {

@@ -36,6 +36,7 @@ struct FocusBarApp: App {
             Text(timerModel.menuBarLabel)
                 .monospacedDigit()
                 .font(.system(.body, design: .rounded))
+                .foregroundColor(timerModel.menuBarColor)
         }
         .menuBarExtraStyle(.window)
     }

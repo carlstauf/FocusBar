@@ -63,6 +63,7 @@ struct MenuBarContentView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(stateColor)
+                .disabled(timerModel.isRunning && settings.strictMode)
                 .keyboardShortcut(.space, modifiers: [])
                 
                 // Secondary actions
