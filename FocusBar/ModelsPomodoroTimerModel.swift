@@ -233,7 +233,13 @@ class PomodoroTimerModel: ObservableObject {
             timeRemaining = settings.focusLength * 60
         case .focus:
             // Long break happens after every 4th completed focus session
-            if settings.longBreakEnabled && completedCycles > 0 && completedCycles % 4 == 0 {
+            let shouldTakeLongBreak = settings.longBreakEnabled && completedCycles > 0 && completedCycles % 4 == 0
+            
+            #if DEBUG
+            print("🔄 Focus completed. Cycles: \(completedCycles), Long break enabled: \(settings.longBreakEnabled), Should take long break: \(shouldTakeLongBreak)")
+            #endif
+            
+            if shouldTakeLongBreak {
                 state = .longBreak
                 timeRemaining = settings.longBreakLength * 60
             } else {

@@ -58,4 +58,31 @@ class SettingsModel: ObservableObject {
     @AppStorage("endOfSessionReminder") var endOfSessionReminder: Bool = true {
         willSet { objectWillChange.send() }
     }
+    
+    // MARK: - Reset to Defaults
+    
+    func resetToDefaults() {
+        // Timer Settings
+        focusLength = 25
+        breakLength = 5
+        longBreakLength = 15
+        longBreakEnabled = true
+        autoStart = false
+        
+        // Appearance Settings
+        compactMode = false
+        menuBarColor = "auto"
+        showTimerInMenuBar = true
+        
+        // Sound Settings
+        enableSounds = true
+        soundVolume = 0.6
+        
+        // Notification Settings
+        notificationsEnabled = true
+        
+        // Behavior Settings
+        strictMode = false
+        endOfSessionReminder = true
+    }
 }
