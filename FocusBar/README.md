@@ -1,164 +1,271 @@
-# FocusBar - macOS Menu Bar Pomodoro Timer
+# 🍅 FocusBar
 
-A beautifully simple menu bar timer that keeps you focused with almost zero interaction and an elegantly invisible presence.
+<div align="center">
 
-## Overview
+**A minimal, distraction-free Pomodoro timer that lives in your macOS menu bar**
 
-FocusBar is a lightweight macOS menu bar app designed to help users maintain focus with minimal friction. It lives entirely in your menu bar - always available, never intrusive, and visually aligned with macOS design principles.
+[![macOS](https://img.shields.io/badge/macOS-13.0+-blue.svg)](https://www.apple.com/macos)
+[![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org)
+[![SwiftUI](https://img.shields.io/badge/SwiftUI-5.0-green.svg)](https://developer.apple.com/xcode/swiftui/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Features
+*Stay focused. Work smarter. Achieve more.*
 
-### Core Features
-- **Menu Bar Timer**: Live countdown display directly in your menu bar (e.g., "24:58")
-- **Drift-Proof Timer**: Uses wall clock timestamps for perfect accuracy across sleep/wake cycles
-- **Multiple Timer States**: Focus sessions, short breaks, and long breaks
-- **Auto-Start**: Optionally auto-start the next session
-- **Persistent State**: Survives app restarts, system sleep, and reboots
-- **System Notifications**: Native macOS notifications for session completions
-- **Cycle Tracking**: Visual dots showing completed Pomodoro cycles
+[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Architecture](#-architecture)
 
-### Appearance Options
-- **Compact Mode**: Show icon-only (🔴 for focus, 🟢 for break)
-- **Menu Bar Colors**: Auto, white, red, or green
-- **Clean UI**: Translucent macOS-native styling with smooth animations
+</div>
 
-### Customization
-- **Focus Duration**: 1-90 minutes (default: 25)
-- **Break Duration**: 1-30 minutes (default: 5)
-- **Long Break**: Optional long break every 4 cycles (default: 15 minutes)
-- **Strict Mode**: Disable pause functionality
-- **Sound Controls**: Toggle sounds and adjust volume
-- **Notifications**: Toggle completion alerts
+---
 
-## How to Build & Run
+## 🎯 What is FocusBar?
 
-### Requirements
+FocusBar is a **native macOS menu bar application** that implements the Pomodoro Technique — a time management method that uses focused work intervals separated by short breaks. It's designed to be:
+
+- ⚡️ **Lightweight** — Uses < 0.2% CPU, minimal memory footprint
+- 🎨 **Native** — Built with SwiftUI, follows macOS design principles
+- 🔒 **Private** — No analytics, no tracking, all data stays local
+- ⏱ **Accurate** — Drift-proof timer survives system sleep/wake
+- 🔔 **Unobtrusive** — Lives in your menu bar, never gets in the way
+
+---
+
+## ✨ Features
+
+### ⏲ **Smart Timer Management**
+- **Live Countdown** in menu bar (e.g., `24:58` or `🟢`)
+- **Drift-Proof Timing** using wall clock timestamps
+- **Auto-Start** next session option
+- **Persistent State** survives restarts and system sleep
+- **Keyboard Shortcuts** (Space to start/pause)
+
+### 🎨 **Customizable Appearance**
+- **Compact Mode** — Show emoji icons instead of time
+- **Color-Coded States** — Green for focus, blue for breaks
+- **Visual Cycle Tracking** — Red dots show completed Pomodoros
+- **Native Design** — Matches macOS Big Sur and later
+
+### 🔔 **Intelligent Notifications**
+- Native macOS notifications when sessions complete
+- Customizable notification sounds
+- Volume control and test button
+- Option to disable notifications
+
+### ⚙️ **Flexible Configuration**
+| Setting | Range | Default |
+|---------|-------|---------|
+| Focus Duration | 1-90 min | 25 min |
+| Short Break | 1-30 min | 5 min |
+| Long Break | 5-60 min | 15 min |
+| Long Break Interval | Every N cycles | Every 4 |
+| Sound Volume | 0-100% | 60% |
+
+### 🛡 **Advanced Features**
+- **Strict Mode** — Disable pause functionality during focus
+- **Long Break System** — Automatic long break every 4 completed cycles
+- **Cycle Counter** — Track daily productivity with visual indicators
+- **Reset to Defaults** — One-click settings reset
+
+---
+
+## 📥 Installation
+
+### Build from Source
+
+#### Prerequisites
 - macOS 13 Ventura or later
 - Xcode 15 or later
+- Apple Developer account (for signing)
 
-### Steps
+#### Steps
+```bash
+# 1. Clone the repository
+git clone https://github.com/yourusername/FocusBar.git
+cd FocusBar
 
-1. **Open the project in Xcode**
-   ```bash
-   open FocusBar.xcodeproj
-   ```
+# 2. Open in Xcode
+open FocusBar.xcodeproj
 
-2. **Select "My Mac" as the run destination**
-   - At the top of Xcode, click the device selector dropdown
-   - Choose "My Mac" (not "My Mac (Designed for iPad)")
+# 3. Select "My Mac" as the run destination
+# (Top toolbar: FocusBar > My Mac)
 
-3. **Run the app**
-   - Press ⌘ + R (Command + R), OR
-   - Click the ▶️ Play button in the top-left toolbar
+# 4. Build and run
+# Press ⌘R or click the Play button
+```
 
-4. **Find your app**
-   - Look in the **top-right corner of your screen** near the clock
-   - You'll see "00:00" or a timer icon
-   - Click it to open the dropdown panel
+> **Important:** This is a menu bar app — look for it in the **top-right corner** of your screen, not the Dock!
 
-### Important: This is a Menu Bar App
-- The app will NOT appear in the Dock
-- The app will NOT open a window
-- Look for it in the **menu bar only** (top-right of screen)
+---
 
-## Usage
+## 🚀 Usage
 
-### Starting a Focus Session
-1. Click the menu bar timer
-2. Click "Start"
-3. The timer begins counting down
-4. The menu bar shows live updates
+### Quick Start
 
-### Controls
-- **Space Bar**: Start/Pause (when dropdown is open)
-- **Reset**: Stop and reset to idle state
-- **Skip**: Skip to the next session (break or focus)
-- **Settings**: Configure all preferences
-- **Quit**: Exit the app
+1. **Launch FocusBar** — Look for `00:00` or `⏱` in your menu bar (top-right corner)
+2. **Click the icon** to open the control panel
+3. **Press "Start"** (or hit Space) to begin a 25-minute focus session
+4. **Work focused** until you hear the completion sound
+5. **Take a break** — The timer automatically switches to break mode
 
-### Notifications
-- When a focus session completes, you'll get a notification
-- When a break ends, you'll be notified to start again
-- Click the notification to return to the app
+### Understanding the Interface
 
-### Cycle Tracking
-- Red dots appear showing completed Pomodoro cycles
-- After 4 cycles (if enabled), you get a longer break
-- Cycles reset when you reset the timer
+```
+┌─────────────────────────────────┐
+│         FOCUS SESSION           │ ← Current state
+│            25:00                │ ← Time remaining
+│         ● ● ● ●                │ ← Completed cycles
+├─────────────────────────────────┤
+│    ┌─────────────────────┐     │
+│    │       START         │     │ ← Primary action
+│    └─────────────────────┘     │
+├─────────────────────────────────┤
+│  [Reset]              [Skip]    │ ← Secondary actions
+├─────────────────────────────────┤
+│  ⚙️ Settings              Quit  │ ← Footer
+└─────────────────────────────────┘
+```
 
-## Technical Details
+### Menu Bar States
 
-### Architecture
-- **Pattern**: MVVM (Model-View-ViewModel)
-- **Language**: Swift 5.7+
-- **UI Framework**: SwiftUI with MenuBarExtra
-- **Persistence**: UserDefaults and @AppStorage
-- **Notifications**: UserNotifications framework
+| Mode | Display (Normal) | Display (Compact) | Color |
+|------|-----------------|-------------------|-------|
+| **Idle** | `00:00` | `⏱` | White/Auto |
+| **Focus** | `24:58` | `🟢` | Green |
+| **Short Break** | `04:59` | `🔵` | Blue |
+| **Long Break** | `14:58` | `🔵` | Blue |
 
-### File Structure
+### The Pomodoro Flow
+
+```
+Start → Focus (25m) → Short Break (5m) → Focus (25m) → Short Break (5m) 
+     → Focus (25m) → Short Break (5m) → Focus (25m) → Long Break (15m)
+     → [Cycle Resets] → Start again...
+```
+
+### Keyboard Shortcuts
+
+- **Space** — Start / Pause / Resume (when panel is open)
+- **⌘Q** — Quit the app
+
+---
+
+## 🏗 Architecture
+
+### Tech Stack
+- **Language:** Swift 5.9
+- **UI Framework:** SwiftUI
+- **App Type:** MenuBarExtra (macOS 13+)
+- **Persistence:** @AppStorage + UserDefaults
+- **Notifications:** UserNotifications framework
+- **Sounds:** NSSound (AppKit)
+
+### Project Structure
+
 ```
 FocusBar/
-├── FocusBarApp.swift              # Main app entry point
-├── Models/
-│   ├── PomodoroTimerModel.swift   # Timer logic and state
-│   └── SettingsModel.swift        # Persistent settings
-├── Views/
-│   ├── MenuBarContentView.swift   # Dropdown panel UI
-│   └── SettingsPopoverView.swift  # Settings interface
-├── Services/
-│   └── NotificationService.swift  # System notifications
-└── Info.plist                     # App configuration
+├── 📱 FocusBarApp.swift              # App entry point
+├── 📁 Models/
+│   ├── PomodoroTimerModel.swift     # Timer state machine
+│   └── SettingsModel.swift          # @AppStorage settings
+├── 📁 Views/
+│   ├── MenuBarContentView.swift     # Main dropdown panel
+│   └── SettingsPopoverView.swift    # Settings interface
+├── 📁 Services/
+│   ├── SoundService.swift           # Audio playback
+│   └── NotificationService.swift    # System notifications
+└── 📄 Info.plist                    # App configuration
 ```
 
-### Key Technical Features
-- **Drift-Proof Timer**: Uses `Date().addingTimeInterval()` instead of counting seconds
-- **Sleep/Wake Handling**: Listens to `NSWorkspace.didWakeNotification`
-- **State Persistence**: Automatically saves timer state to survive restarts
-- **Low CPU Usage**: Updates UI only once per second, < 0.2% CPU
+### Design Patterns
 
-## Customization
+- **MVVM** — Separation of UI and business logic
+- **Observable Objects** — Reactive state management with `@Published`
+- **Dependency Injection** — Services passed to view models
+- **Service Layer** — Sound and notification abstractions
 
-### Timer Durations
-Open Settings → Timer section to adjust:
-- Focus: 1-90 minutes
-- Break: 1-30 minutes
-- Long Break: 5-60 minutes (every 4 cycles)
+### Key Implementation Details
 
-### Appearance
-Open Settings → Appearance section to:
-- Enable compact mode (icon only)
-- Change menu bar color
-- Toggle timer visibility
+#### Drift-Proof Timer
+```swift
+// Instead of counting seconds (which drifts):
+timer?.fire() // ❌ Accumulates error
 
-### Behavior
-Open Settings → Behavior section to:
-- Enable strict mode (no pausing)
-- Toggle end of session reminders
-- Enable/disable auto-start
+// Use wall clock timestamps:
+endTime = Date().addingTimeInterval(TimeInterval(timeRemaining))
+let remaining = Int(endTime.timeIntervalSinceNow) // ✅ Always accurate
+```
 
-## Troubleshooting
+#### Sleep/Wake Handling
+```swift
+NSWorkspace.shared.notificationCenter.addObserver(
+    self,
+    selector: #selector(handleWake),
+    name: NSWorkspace.didWakeNotification,
+    object: nil
+)
+```
 
-### App doesn't appear after running
-- Make sure you selected "My Mac" (not "Designed for iPad")
-- Look in the **menu bar** (top-right of screen), not the Dock
-- Check that the build succeeded (no red errors in Xcode)
+---
 
-### Timer isn't accurate
-- The timer uses wall clock timestamps and is always accurate
-- If you see drift, restart the app
+## 🐛 Troubleshooting
+
+### App doesn't appear in menu bar
+- ✅ Check you selected "My Mac" (not "Designed for iPad")
+- ✅ Look in the **top-right corner** near the clock
+- ✅ Verify build succeeded (no red errors)
+- ✅ Try restarting the app
 
 ### Notifications not showing
-- Check System Settings → Notifications → FocusBar
-- Enable notifications in the app Settings
+- ✅ Check **System Settings → Notifications → FocusBar**
+- ✅ Enable "Allow Notifications"
+- ✅ Ensure notifications are enabled in app Settings
 
-### App won't build
-- Make sure you're running macOS 13+ and Xcode 15+
-- Check that all files are added to the target
+### Sounds not playing
+- ✅ Check system volume is not muted
+- ✅ Enable sounds in app Settings
+- ✅ Test with the "Test Sound" button
+- ✅ Verify volume slider is > 0%
 
-## License
+### Can't pause timer
+- ✅ Check if **Strict Mode** is enabled (Settings → Behavior)
+- ✅ Strict Mode intentionally disables pausing
+
+---
+
+## 📝 Roadmap
+
+### v1.1 (Next Release)
+- [ ] Customizable timer sounds
+- [ ] Stats/analytics dashboard
+- [ ] Export session history
+- [ ] Dark/Light theme toggle
+
+### v2.0 (Future)
+- [ ] iCloud sync across devices
+- [ ] Shortcuts app integration
+- [ ] Apple Watch support
+- [ ] Focus mode automation
+
+---
+
+## 📜 License
 
 Copyright © 2025 Carl Stauffer. All rights reserved.
 
-## Credits
+This project is licensed under the MIT License.
 
-Built with SwiftUI and love for focused work.
+---
+
+## 🙏 Acknowledgments
+
+- **Francesco Cirillo** — Creator of the Pomodoro Technique
+- **Apple Developer Community** — For SwiftUI resources and inspiration
+
+---
+
+<div align="center">
+
+**⭐️ If FocusBar helps you stay focused, consider giving it a star!**
+
+Made with ❤️ and lots of ☕️
+
+</div>
