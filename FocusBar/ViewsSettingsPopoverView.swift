@@ -87,36 +87,6 @@ struct SettingsPopoverView: View {
                 
                 Divider()
                 
-                // Appearance Settings
-                VStack(alignment: .leading, spacing: 8) {
-                    Label("Appearance", systemImage: "paintbrush")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal)
-                    
-                    VStack(alignment: .leading, spacing: 10) {
-                        Toggle("Compact Mode", isOn: $settings.compactMode)
-                            .font(.caption)
-                        
-                        HStack {
-                            Text("Menu Bar Color")
-                                .font(.caption)
-                            Spacer()
-                            Picker("", selection: $settings.menuBarColor) {
-                                Text("Auto").tag("auto")
-                                Text("White").tag("white")
-                                Text("Red").tag("red")
-                                Text("Green").tag("green")
-                            }
-                            .labelsHidden()
-                            .frame(width: 90)
-                        }
-                    }
-                    .padding(.horizontal)
-                }
-                
-                Divider()
-                
                 // Sound Settings
                 VStack(alignment: .leading, spacing: 8) {
                     Label("Sound", systemImage: "speaker.wave.2")
@@ -223,6 +193,20 @@ struct SettingsPopoverView: View {
                         .padding(.horizontal)
                     }
                 }
+                
+                Divider()
+                
+                // Reset to Defaults
+                Button(action: {
+                    settings.resetToDefaults()
+                }) {
+                    Label("Reset to Defaults", systemImage: "arrow.counterclockwise")
+                        .font(.caption)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .padding(.horizontal)
+                .padding(.vertical, 8)
                 
                 // Footer
                 Text("Changes save automatically")
