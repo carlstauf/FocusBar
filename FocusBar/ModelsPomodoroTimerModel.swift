@@ -44,10 +44,12 @@ class PomodoroTimerModel: ObservableObject {
     private var timer: Timer?
     private var settings: SettingsModel
     private var notificationService: NotificationService
+    private var soundService: SoundService
     
-    init(settings: SettingsModel, notificationService: NotificationService) {
+    init(settings: SettingsModel, notificationService: NotificationService, soundService: SoundService) {
         self.settings = settings
         self.notificationService = notificationService
+        self.soundService = soundService
         
         // Restore state from UserDefaults
         restoreState()
@@ -71,6 +73,7 @@ class PomodoroTimerModel: ObservableObject {
         if state == .idle {
             state = .focus
             timeRemaining = settings.focusLength * 60
+            soundService.playFocusStart()
         }
         
         endTime = Date().addingTimeInterval(TimeInterval(timeRemaining))
@@ -170,6 +173,13 @@ class PomodoroTimerModel: ObservableObject {
     private func completeCycle() {
         stop()
         
+        // Play appropriate end sound
+        if state == .focus {
+            soundService.playFocusEnd()
+        } else {
+            soundService.playBreakEnd()
+        }
+        
         // Send notification
         let title = state == .focus ? "Focus Complete!" : "Break Over!"
         let body = state == .focus ? "Time for a break." : "Ready to focus again?"
@@ -204,9 +214,11 @@ class PomodoroTimerModel: ObservableObject {
                 state = .shortBreak
                 timeRemaining = settings.breakLength * 60
             }
+            soundService.playBreakStart()
         case .shortBreak, .longBreak:
             state = .focus
             timeRemaining = settings.focusLength * 60
+            soundService.playFocusStart()
         }
     }
     

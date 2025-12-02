@@ -17,7 +17,8 @@ struct FocusBarApp: App {
     init() {
         let settings = SettingsModel()
         let notificationService = NotificationService()
-        let timerModel = PomodoroTimerModel(settings: settings, notificationService: notificationService)
+        let soundService = SoundService(settings: settings)
+        let timerModel = PomodoroTimerModel(settings: settings, notificationService: notificationService, soundService: soundService)
         
         _settings = StateObject(wrappedValue: settings)
         _notificationService = StateObject(wrappedValue: notificationService)

@@ -15,69 +15,30 @@ class SoundService {
         self.settings = settings
     }
     
-    // MARK: - Public Methods
-    
-    func playFocusStartSound() {
-        guard settings.enableSounds, settings.playSoundOnFocusStart else { return }
-        playSound(named: settings.soundType, volume: settings.soundVolume)
-    }
-    
-    func playFocusEndSound() {
-        guard settings.enableSounds, settings.playSoundOnFocusEnd else { return }
-        playSound(named: settings.soundType, volume: settings.soundVolume)
-    }
-    
-    func playBreakStartSound() {
-        guard settings.enableSounds, settings.playSoundOnBreakStart else { return }
-        playSound(named: settings.soundType, volume: settings.soundVolume)
-    }
-    
-    func playBreakEndSound() {
-        guard settings.enableSounds, settings.playSoundOnBreakEnd else { return }
-        playSound(named: settings.soundType, volume: settings.soundVolume)
-    }
-    
-    func playTestSound() {
-        playSound(named: settings.soundType, volume: settings.soundVolume)
-    }
-    
-    // MARK: - Private Methods
-    
-    private func playSound(named soundName: String, volume: Double) {
-        let clampedVolume = Float(min(max(volume, 0.0), 1.0))
+    private func play(_ name: String) {
+        guard settings.enableSounds else { return }
         
-        // Try to load the specified sound
-        if let sound = NSSound(named: soundName) {
-            sound.volume = clampedVolume
+        if let sound = NSSound(named: name) {
+            sound.volume = Float(settings.soundVolume)
             sound.play()
-            return
         }
-        
-        // Fallback to system sounds
-        switch soundName {
-        case "ding", "default":
-            if let sound = NSSound(named: "Ping") {
-                sound.volume = clampedVolume
-                sound.play()
-            } else {
-                NSSound.beep()
-            }
-        case "bell":
-            if let sound = NSSound(named: "Glass") {
-                sound.volume = clampedVolume
-                sound.play()
-            } else {
-                NSSound.beep()
-            }
-        case "pop":
-            if let sound = NSSound(named: "Pop") {
-                sound.volume = clampedVolume
-                sound.play()
-            } else {
-                NSSound.beep()
-            }
-        default:
-            NSSound.beep()
-        }
+    }
+    
+    // MARK: - Public Sound Events
+    
+    func playFocusStart() {
+        play("Glass")     // macOS system sound
+    }
+    
+    func playFocusEnd() {
+        play("Hero")      // macOS system sound
+    }
+    
+    func playBreakStart() {
+        play("Ping")      // macOS system sound
+    }
+    
+    func playBreakEnd() {
+        play("Submarine") // macOS system sound
     }
 }

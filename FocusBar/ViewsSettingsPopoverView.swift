@@ -93,14 +93,21 @@ struct SettingsPopoverView: View {
                 // Sound Settings
                 GroupBox(label: Label("Sound", systemImage: "speaker.wave.2")) {
                     VStack(alignment: .leading, spacing: 12) {
-                        Toggle("Enable Sound", isOn: $settings.soundEnabled)
+                        Toggle("Enable Sounds", isOn: $settings.enableSounds)
                         
-                        if settings.soundEnabled {
+                        if settings.enableSounds {
                             HStack {
                                 Text("Volume")
                                 Spacer()
                                 Slider(value: $settings.soundVolume, in: 0...1)
                                     .frame(width: 120)
+                            }
+                            .padding(.leading)
+                            
+                            Button("Test Sound") {
+                                let sound = NSSound(named: "Glass")
+                                sound?.volume = Float(settings.soundVolume)
+                                sound?.play()
                             }
                             .padding(.leading)
                         }
