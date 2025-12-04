@@ -10,7 +10,6 @@ import SwiftUI
 struct MenuBarContentView: View {
     @EnvironmentObject var timerModel: PomodoroTimerModel
     @EnvironmentObject var settings: SettingsModel
-    @State private var showSettings = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -89,18 +88,12 @@ struct MenuBarContentView: View {
             
             // Footer
             HStack {
-                Button(action: { showSettings.toggle() }) {
+                Button(action: { openSettingsWindow() }) {
                     Label("Settings", systemImage: "gearshape")
                         .font(.system(.caption, design: .rounded))
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.secondary)
-                .popover(isPresented: $showSettings) {
-                    SettingsPopoverView()
-                        .environmentObject(settings)
-                        .environmentObject(timerModel)
-                        .frame(width: 320, height: 500)
-                }
                 
                 Spacer()
                 
@@ -148,5 +141,23 @@ struct MenuBarContentView: View {
         case .shortBreak, .longBreak:
             return .green
         }
+    }
+    
+    private func openSettingsWindow() {
+        let settingsView = SettingsPopoverView()
+            .environmentObject(settings)
+            .environmentObject(timerModel)
+            .frame(width: 320, height: 500)
+        
+        let hostingController = NSHostingController(rootView: settingsView)
+        let window = NSWindow(contentViewController: hostingController)
+        window.title = "Settings"
+        window.styleMask = [.titled, .closable]
+        window.isReleasedWhenClosed = false
+        window.center()
+        window.makeKeyAndOrderFront(nil)
+        
+        // Keep a reference to prevent immediate deallocation
+        NSApp.activate(ignoringOtherApps: true)
     }
 }

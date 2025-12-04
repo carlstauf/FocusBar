@@ -8,7 +8,6 @@
 import SwiftUI
 import UserNotifications
 
-@main
 struct FocusBarApp: App {
     @StateObject private var settings = SettingsModel()
     @StateObject private var notificationService: NotificationService
@@ -32,6 +31,9 @@ struct FocusBarApp: App {
             MenuBarContentView()
                 .environmentObject(timerModel)
                 .environmentObject(settings)
+                .frame(minWidth: 280, idealWidth: 280, maxWidth: 280)
+                .frame(minHeight: 200)
+                .fixedSize()
         } label: {
             Text(timerModel.menuBarLabel)
                 .monospacedDigit()

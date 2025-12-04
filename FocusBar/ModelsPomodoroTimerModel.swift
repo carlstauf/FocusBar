@@ -71,10 +71,21 @@ class PomodoroTimerModel: ObservableObject {
     // MARK: - Public Methods
     
     func start() {
+        // If idle, transition to focus and play start sound
         if state == .idle {
             state = .focus
             timeRemaining = settings.focusLength * 60
             soundService.playFocusStart()
+        }
+        // If in break/focus state but not running, this is a manual start
+        // (e.g., after completing a session with auto-start OFF)
+        else if !isRunning && !isPaused {
+            // Play appropriate start sound for current state
+            if state == .focus {
+                soundService.playFocusStart()
+            } else {
+                soundService.playBreakStart()
+            }
         }
         
         endTime = Date().addingTimeInterval(TimeInterval(timeRemaining))
@@ -168,6 +179,8 @@ class PomodoroTimerModel: ObservableObject {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.tick()
         }
+        // Ensure timer runs even when menu bar is open
+        RunLoop.current.add(timer!, forMode: .common)
     }
     
     private func stop() {
@@ -246,11 +259,11 @@ class PomodoroTimerModel: ObservableObject {
                 state = .shortBreak
                 timeRemaining = settings.breakLength * 60
             }
-            soundService.playBreakStart()
+            // Don't play sound here - will play when starting
         case .shortBreak, .longBreak:
             state = .focus
             timeRemaining = settings.focusLength * 60
-            soundService.playFocusStart()
+            // Don't play sound here - will play when starting
         }
     }
     

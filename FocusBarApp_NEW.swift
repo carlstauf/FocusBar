@@ -9,7 +9,7 @@ import SwiftUI
 import UserNotifications
 
 @main
-struct FocusBarApp: App {
+struct FocusBarAppNew: App {
     @StateObject private var settings = SettingsModel()
     @StateObject private var notificationService: NotificationService
     @StateObject private var timerModel: PomodoroTimerModel

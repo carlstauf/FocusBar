@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		61C91AD22EE003AB00A80FEF /* FocusBarApp_NEW.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C91AD12EE003AB00A80FEF /* FocusBarApp_NEW.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		61C91AAF2EDFA05F00A80FEF /* FocusBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61C91AD12EE003AB00A80FEF /* FocusBarApp_NEW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusBarApp_NEW.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -34,6 +39,7 @@
 			children = (
 				61C91AB12EDFA05F00A80FEF /* FocusBar */,
 				61C91AB02EDFA05F00A80FEF /* Products */,
+				61C91AD12EE003AB00A80FEF /* FocusBarApp_NEW.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -119,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61C91AD22EE003AB00A80FEF /* FocusBarApp_NEW.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
